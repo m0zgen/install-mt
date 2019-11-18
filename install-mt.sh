@@ -22,6 +22,7 @@ SYSTEM_SERVICE="/etc/systemd/system/mtproxy.service"
 
 function installMT() {
   # Install MT
+  cd $SCRIPT_PATH
   git clone https://github.com/TelegramMessenger/MTProxy.git
 
   cd MTProxy/ && make
@@ -70,7 +71,13 @@ function setupFW() {
     firewall-cmd --reload
 }
 
+function installUpdater() {
+    cp $SCRIPT_PATH/update.sh /etc/cron.weekly/
+    chown +x /etc/cron.weekly/update.sh
+}
+
 installSoftware
 installMT
+installUpdater
 setupFW
 
