@@ -9,21 +9,23 @@ SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 
 # Install Software
 # -------------------------------------------------------------------------------------------\
-yum install epel-release openssl-devel zlib-devel vim-common git -y
-yum groupinstall "Development Tools" -y
+
+function installSoftware() {
+  yum install epel-release openssl-devel zlib-devel vim-common git -y
+  yum groupinstall "Development Tools" -y
+}
 
 # Vars
 SECRET_KEY=$(head -c 16 /dev/urandom | xxd -ps)
 START_SCRIPT="/opt/mtproxy/start.sh"
 SYSTEM_SERVICE="/etc/systemd/system/mtproxy.service"
 
-# Install MT
-git clone https://github.com/TelegramMessenger/MTProxy.git
+function installMT() {
+  # Install MT
+  git clone https://github.com/TelegramMessenger/MTProxy.git
 
-cd MTProxy/ && make
-
-mkdir /opt/mtproxy && cp objs/bin/mtproto-proxy /opt/mtproxy/
-
+  cd MTProxy/ && make
+  mkdir /opt/mtproxy && cp objs/bin/mtproto-proxy /opt/mtproxy/
 
 cat <<EOF > $START_SCRIPT
 #!/bin/bash
@@ -44,8 +46,6 @@ curl -s https://core.telegram.org/getProxyConfig -o /tmp/proxy-multi.conf
 /opt/mtproxy/mtproto-proxy --ipv6 -u nobody -p 8888 -H 443 -S ${SECRET_KEY}  --aes-pwd /tmp/proxy-secret /tmp/proxy-multi.conf -M 14
 EOF
 
-chmod +x $START_SCRIPT
-
 cat << EOF > $SYSTEM_SERVICE
 [Unit]
 Description=MTProxy
@@ -61,4 +61,16 @@ RestartSec=30
 WantedBy=multi-user.target
 EOF
 
-systemctl enable mtproxy && systemctl start mtproxy && systemctl status mtproxy
+  chmod +x $START_SCRIPT
+  systemctl enable mtproxy && systemctl start mtproxy && systemctl status mtproxy
+}
+
+function setupFW() {
+    firewall-cmd --permanent --add-service=https
+    firewall-cmd --reload
+}
+
+installSoftware
+installMT
+setupFW
+
