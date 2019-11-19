@@ -10,6 +10,7 @@ SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 # Vars
 START_SCRIPT="/opt/mtproxy/start.sh"
 SYSTEM_SERVICE="/etc/systemd/system/mtproxy.service"
+SERVER_IP=$(hostname -I | cut -d' ' -f1)
 
 # Install Software
 # -------------------------------------------------------------------------------------------\
@@ -85,3 +86,6 @@ installMT
 installUpdater
 setupFW
 
+echo "Install complete! Please use this link for your MTProxy"
+echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY"
+echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" > $SCRIPT_PATH/t-link.txt
