@@ -93,6 +93,6 @@ echo -e "Install complete! Please use this link for your MTProxy\n"
 echo -e "${GREEN}tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
 echo -e "${GREEN}https://t.me/proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
 
-echo  -e "\n$Links saved to {RED}$SCRIPT_PATH/t-link.txt${CL}\n"
+echo  -e "\nLinks saved to ${RED}$SCRIPT_PATH/t-link.txt${CL}\n"
 echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" > $SCRIPT_PATH/t-link.txt
 echo -e "https://t.me/proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" >> $SCRIPT_PATH/t-link.txt
