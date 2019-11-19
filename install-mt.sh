@@ -73,7 +73,7 @@ function setupFW() {
 
 function installUpdater() {
     cp $SCRIPT_PATH/update.sh /etc/cron.weekly/
-    chown +x /etc/cron.weekly/update.sh
+    chmod +x /etc/cron.weekly/update.sh
 }
 
 installSoftware
