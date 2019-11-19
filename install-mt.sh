@@ -8,6 +8,10 @@ PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 
 # Vars
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+CL='\033[0m'
+#
 START_SCRIPT="/opt/mtproxy/start.sh"
 SYSTEM_SERVICE="/etc/systemd/system/mtproxy.service"
 SERVER_IP=$(hostname -I | cut -d' ' -f1)
@@ -87,5 +91,5 @@ installUpdater
 setupFW
 
 echo "Install complete! Please use this link for your MTProxy"
-echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY"
+echo -e "${GREEN}tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
 echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" > $SCRIPT_PATH/t-link.txt
