@@ -8,6 +8,7 @@ PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 
 # Vars
+# -------------------------------------------------------------------------------------------\
 RED='\033[1;31m'
 GREEN='\033[1;32m'
 CL='\033[0m'
@@ -18,7 +19,6 @@ SERVER_IP=$(hostname -I | cut -d' ' -f1)
 
 # Install Software
 # -------------------------------------------------------------------------------------------\
-
 function installSoftware() {
   yum install epel-release openssl-devel zlib-devel vim-common git -y
   yum groupinstall "Development Tools" -y
@@ -85,13 +85,14 @@ function installUpdater() {
 }
 
 installSoftware
-
 installMT
 installUpdater
 setupFW
 
-echo "Install complete! Please use this link for your MTProxy"
+echo -e "Install complete! Please use this link for your MTProxy\n"
 echo -e "${GREEN}tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
-echo -e "\n${GREEN}https://t.me/proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
+echo -e "${GREEN}https://t.me/proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
+
 echo  -e "\n${RED}Links saved to $SCRIPT_PATH/t-link.txt${CL}"
 echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" > $SCRIPT_PATH/t-link.txt
+echo -e "https://t.me/proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" >> $SCRIPT_PATH/t-link.txt
