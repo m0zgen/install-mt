@@ -5,6 +5,7 @@ Features:
 * Systmed unit creation
 * Firewalld rule exception
 * t.me link generator
+* Autoupdate shedule
 
 ## Thanks
 Special thanks for this article :)
