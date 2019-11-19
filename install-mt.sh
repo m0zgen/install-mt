@@ -7,6 +7,10 @@
 PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 
+# Vars
+START_SCRIPT="/opt/mtproxy/start.sh"
+SYSTEM_SERVICE="/etc/systemd/system/mtproxy.service"
+
 # Install Software
 # -------------------------------------------------------------------------------------------\
 
@@ -15,11 +19,6 @@ function installSoftware() {
   yum groupinstall "Development Tools" -y
 }
 
-# Vars
-SECRET_KEY=$(head -c 16 /dev/urandom | xxd -ps)
-START_SCRIPT="/opt/mtproxy/start.sh"
-SYSTEM_SERVICE="/etc/systemd/system/mtproxy.service"
-
 function installMT() {
   # Install MT
   cd $SCRIPT_PATH
@@ -27,6 +26,10 @@ function installMT() {
 
   cd MTProxy/ && make
   mkdir /opt/mtproxy && cp objs/bin/mtproto-proxy /opt/mtproxy/
+
+  # Vars
+  head -c 16 /dev/urandom | xxd -ps > $SCRIPT_PATH/secret.txt
+  SECRET_KEY=$(cat $SCRIPT_PATH/secret.txt)
 
 cat <<EOF > $START_SCRIPT
 #!/bin/bash
@@ -44,7 +47,7 @@ if [ -f /tmp/proxy-multi.conf ]; then
 fi
 curl -s https://core.telegram.org/getProxyConfig -o /tmp/proxy-multi.conf
 
-/opt/mtproxy/mtproto-proxy --ipv6 -u nobody -p 8888 -H 443 -S ${SECRET_KEY}  --aes-pwd /tmp/proxy-secret /tmp/proxy-multi.conf -M 14
+/opt/mtproxy/mtproto-proxy --ipv6 -u nobody -p 8888 -H 443 -S ${SECRET_KEY} --aes-pwd /tmp/proxy-secret /tmp/proxy-multi.conf -M 14
 EOF
 
 cat << EOF > $SYSTEM_SERVICE
@@ -77,6 +80,7 @@ function installUpdater() {
 }
 
 installSoftware
+
 installMT
 installUpdater
 setupFW
