@@ -92,4 +92,6 @@ setupFW
 
 echo "Install complete! Please use this link for your MTProxy"
 echo -e "${GREEN}tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
+echo -e "\n${GREEN}https://t.me/proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY${CL}"
+echo  -e "\n${RED}Links saved to $SCRIPT_PATH/t-link.txt${CL}"
 echo "tg://proxy?server=$SERVER_IP&port=443&secret=$SECRET_KEY" > $SCRIPT_PATH/t-link.txt
